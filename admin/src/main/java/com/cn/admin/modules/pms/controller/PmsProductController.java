@@ -3,6 +3,7 @@ package com.cn.admin.modules.pms.controller;
 
 import com.cn.admin.modules.pms.model.PmsProduct;
 import com.cn.admin.modules.pms.service.PmsProductService;
+import com.cn.common.api.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,8 +25,8 @@ public class PmsProductController {
     PmsProductService productService;
 
     @RequestMapping("/list")
-    public List<PmsProduct> getAllProduct() {
-        return productService.list();
+    public CommonResult<List<PmsProduct>> getAllProduct() {
+        return CommonResult.success(productService.list());
     }
 }
 
