@@ -35,26 +35,26 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         // Ant方式路径匹配 /**  ？  _
         PathMatcher matcher = new AntPathMatcher();
         for (String ignoredUrl : urls) {
-            if(matcher.match(ignoredUrl,requestURI)){
-                return  true;
+            if (matcher.match(ignoredUrl, requestURI)) {
+                return true;
             }
         }
-
+        return true;
         //2、未登录用户，直接拒绝访问
-        if (null == request.getSession().getAttribute(ComConstants.FLAG_CURRENT_USER)) {
-            throw new ApiException(ResultCode.UNAUTHORIZED);
-        } else {
-            //3、已登录用户，判断是否有资源访问权限  Todo:到时候用spring security实现
-            UmsAdmin umsAdmin = (UmsAdmin) request.getSession().getAttribute(ComConstants.FLAG_CURRENT_USER);
-            // 获取用户所有可访问资源
-            List<UmsResource> resourceList = umsAdminService.getResourceList(umsAdmin.getId());
-            for (UmsResource umsResource : resourceList) {
-                if(matcher.match( umsResource.getUrl(),requestURI)){
-                    return  true;
-                }
-            }
-            throw new ApiException(ResultCode.FORBIDDEN);
-        }
+//        if (null == request.getSession().getAttribute(ComConstants.FLAG_CURRENT_USER)) {
+//            throw new ApiException(ResultCode.UNAUTHORIZED);
+//        } else {
+//            //3、已登录用户，判断是否有资源访问权限  Todo:到时候用spring security实现
+//            UmsAdmin umsAdmin = (UmsAdmin) request.getSession().getAttribute(ComConstants.FLAG_CURRENT_USER);
+//            // 获取用户所有可访问资源
+//            List<UmsResource> resourceList = umsAdminService.getResourceList(umsAdmin.getId());
+//            for (UmsResource umsResource : resourceList) {
+//                if(matcher.match( umsResource.getUrl(),requestURI)){
+//                    return  true;
+//                }
+//            }
+//            throw new ApiException(ResultCode.FORBIDDEN);
+//        }
     }
 
 
