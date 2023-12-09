@@ -56,11 +56,11 @@ public class UmsAdminController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult login(@Validated @RequestBody UmsAdminLoginParam umsAdminLoginParam) {
-         UmsAdmin login = adminService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword());
+        UmsAdmin login = adminService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword());
         if (login == null) {
             return CommonResult.validateFailed("用户名或密码错误");
         }
-        session.setAttribute(ComConstants.FLAG_CURRENT_USER,login);
+        session.setAttribute(ComConstants.FLAG_CURRENT_USER, login);
         System.out.println(session.getId());
         Map<String, String> tokenMap = new HashMap<>();
         // jwt
@@ -71,16 +71,17 @@ public class UmsAdminController {
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult getAdminInfo() {
-        UmsAdmin umsAdmin= (UmsAdmin) session.getAttribute(ComConstants.FLAG_CURRENT_USER);
+//        UmsAdmin umsAdmin= (UmsAdmin) session.getAttribute(ComConstants.FLAG_CURRENT_USER);
+        UmsAdmin umsAdmin = adminService.getAdminByUsername("admin");
         System.out.println(session.getId());
         Map<String, Object> data = new HashMap<>();
         data.put("username", umsAdmin.getUsername());
         data.put("menus", roleService.getMenuList(umsAdmin.getId()));
         data.put("icon", umsAdmin.getIcon());
         List<UmsRole> roleList = adminService.getRoleList(umsAdmin.getId());
-        if(CollUtil.isNotEmpty(roleList)){
+        if (CollUtil.isNotEmpty(roleList)) {
             List<String> roles = roleList.stream().map(UmsRole::getName).collect(Collectors.toList());
-            data.put("roles",roles);
+            data.put("roles", roles);
         }
         return CommonResult.success(data);
     }
@@ -89,7 +90,7 @@ public class UmsAdminController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult logout() {
-        session.setAttribute(ComConstants.FLAG_CURRENT_USER,null);
+        session.setAttribute(ComConstants.FLAG_CURRENT_USER, null);
         return CommonResult.success(null);
     }
 
@@ -157,7 +158,7 @@ public class UmsAdminController {
     public CommonResult updateStatus(@PathVariable Long id, @RequestParam(value = "status") Integer status) {
         UmsAdmin umsAdmin = new UmsAdmin();
         umsAdmin.setStatus(status);
-        boolean success = adminService.update(id,umsAdmin);
+        boolean success = adminService.update(id, umsAdmin);
         if (success) {
             return CommonResult.success(null);
         }

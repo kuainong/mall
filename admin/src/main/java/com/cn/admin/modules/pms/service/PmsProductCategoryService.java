@@ -3,8 +3,8 @@ package com.cn.admin.modules.pms.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cn.admin.modules.pms.model.PmsProductCategory;
-import com.cn.common.api.CommonPage;
-import com.cn.common.api.CommonResult;
+
+import java.util.List;
 
 /**
  * <p>
@@ -24,4 +24,6 @@ public interface PmsProductCategoryService extends IService<PmsProductCategory> 
      * @return
      */
     Page list(Long parentId, Integer pageNum, Integer pageSize);
+
+    Boolean updateNavStatus(List<Long> ids, Integer navStatus);
 }

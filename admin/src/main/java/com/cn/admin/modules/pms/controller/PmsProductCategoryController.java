@@ -9,6 +9,8 @@ import com.cn.common.api.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  * 产品分类 前端控制器
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2023-10-28
  */
 @RestController
-@RequestMapping("/pms/pmsProductCategory")
+@RequestMapping("/productCategory")
 public class PmsProductCategoryController {
     @Autowired
     PmsProductCategoryService productCategoryService;
@@ -29,6 +31,26 @@ public class PmsProductCategoryController {
                                                                 @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
         Page result = productCategoryService.list(parentId, pageNum, pageSize);
         return CommonResult.success(CommonPage.restPage(result));
+    }
+
+
+    @RequestMapping(value = "/update/navStatus", method = RequestMethod.POST)
+    public CommonResult updateNavStatus(@RequestParam(value = "ids") List<Long> ids,
+                                        @RequestParam(value = "navStatus", defaultValue = "5") Integer navStatus) {
+        Boolean result = productCategoryService.updateNavStatus(ids, navStatus);
+        if (result) {
+            return CommonResult.success(result);
+        }
+        return CommonResult.failed();
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public CommonResult delete(@PathVariable Long id) {
+        Boolean result = productCategoryService.removeById(id);
+        if (result) {
+            return CommonResult.success(result);
+        }
+        return CommonResult.failed();
     }
 }
 
