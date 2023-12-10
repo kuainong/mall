@@ -52,5 +52,26 @@ public class PmsProductCategoryController {
         }
         return CommonResult.failed();
     }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public CommonResult create(@RequestBody PmsProductCategory productCategory) {
+        Boolean result = productCategoryService.save(productCategory);
+        if (result) {
+            return CommonResult.success(result);
+        }
+        return CommonResult.failed();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public CommonResult<PmsProductCategory> getById(@PathVariable Long id) {
+        PmsProductCategory productCategory = productCategoryService.getById(id);
+        return CommonResult.success(productCategory);
+    }
+
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+    public CommonResult update(@PathVariable Long id, @RequestBody PmsProductCategory productCategory) {
+        Boolean result = productCategoryService.updateById(productCategory);
+        return CommonResult.success(result);
+    }
 }
 

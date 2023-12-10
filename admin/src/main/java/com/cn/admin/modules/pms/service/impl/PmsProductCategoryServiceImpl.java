@@ -44,7 +44,6 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
         pmsProductCategoryUpdateWrapper.lambda().set(PmsProductCategory::getNavStatus, navStatus)
                 //Condition
                 .in(PmsProductCategory::getId, ids);
-        this.update(pmsProductCategoryUpdateWrapper);
-        return null;
+        return this.update(pmsProductCategoryUpdateWrapper);
     }
 }
